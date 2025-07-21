@@ -66,8 +66,28 @@ bond.accrued()
 maxYield = 21
 yieldCurve = [bond.fullPriceFromYield(i/100) for i in range (maxYield)]
 
-#This list comprehension code makes in a single line the operaiton in comments put below
+#This list comprehension code makes in a single line the operation in comments put below
 #YieldCurve = []
 #for i in range(maxYield):
+#yields = i/100
+#yieldCurves = bond.fullPriceFromYield(yields)
+#yieldCurve.append(yieldCurves)
 
-plt.figure(figz
+plt.figure(figsize=(12,6)) #Sizing the plot
+plt.plot(yieldCurve, 'o-') #Selecting market
+plt.xlabel('Yield', size = 14) #Labeling X axis
+plt.ylabel('Price', size = 14) #Labeling Y axis
+plt.title('Relationship between Yields and Prices', size = 20); #Titling the graph
+
+#Polynomial function for the relationship between yield and price
+def fitAndPlot(y, price, d):
+  coeffs = np.polfit(y, price, deg=d)
+  ry = np.polyval(coeffs, y)
+  plt.figure(figsize=(12,6))
+  plt.plot(y, price, 'o-')
+  plt.xlabel('Yield', size = 14) #Labeling X axis
+  plt.ylabel('Price', size = 14) #Labeling Y axis
+  plt.title('Relationship between Yields and Prices', size = 20);
+
+yields = np.linspace(0.0,20,20, endpoint = True)/100 #Array of 20 equally spaced points between 0 and 20
+fitAndPlot(yields*100, bond.fullPriceFromYield(yields), 3) #Showing the plot
